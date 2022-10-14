@@ -66,7 +66,7 @@ void draw() {
     anchorY = height/2;
     fill(0, 10);
   }
-
+    //home to center when mouse pressed?
   noStroke();
   rect(-width, -height, width*3, height*3);
 
