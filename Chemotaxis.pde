@@ -6,7 +6,7 @@ class Bolt {
   float myX, myY;
   float myT = 0;
   float oldX, oldY;
-  float centerX, centerY, myRadius, myVelocity, mySize;  //radius needs to be fixed, do derivative properly >:(
+  float centerX, centerY, myRadius, myVelocity, mySize; 
   color light;
   Bolt(boolean fromMouse) {
     if (fromMouse) {
@@ -39,6 +39,18 @@ class Bolt {
     myY += cos(radians(myT + (float)(Math.random()-0.5))) * myRadius + (float)(Math.random()-0.5);
     myT += myVelocity;
   }
+  void converge() {
+    if (Math.random() < abs(myVelocity*myRadius)/360) {
+      myVelocity *= -1;
+    }
+    oldX = myX + (float)(Math.random()-0.5)*5;
+    oldY = myY + (float)(Math.random()-0.5)*5;
+
+    //program homing here
+    myX += -sin(radians(myT + (float)(Math.random()-0.5))) * myRadius + (float)(Math.random()-0.5);
+    myY += cos(radians(myT + (float)(Math.random()-0.5))) * myRadius + (float)(Math.random()-0.5);
+    myT += myVelocity;
+  }  
   void show() {
     strokeWeight(mySize);
     stroke(light);
@@ -70,10 +82,11 @@ void draw() {
   rect(-width, -height, width*3, height*3);
 
   for (int i = 0; i < bolts.length; i++) {
-    if (chemotaxis) {
-
-    } else {
-      bolts[i].flash();    
+    if (!chemotaxis) {
+      bolts[i].flash();
+    }
+    if (mouseButton == RIGHT) {
+      bolts[i].converge();
     }
     bolts[i].show();
   }
