@@ -13,7 +13,7 @@ class Bolt {
       centerY = anchorY;
     } else {
       centerX = 1600/2;
-      centerY = 800/2;
+      centerY = 900/2;
     }
     light = color((int)(Math.random()*200+55), (int)(Math.random()*200+55), (int)(Math.random()*200+55));
     myRadius = (float)(Math.random()*2)+1;
@@ -45,7 +45,7 @@ class Bolt {
 Bolt [] tempBolts;
 Bolt [] bolts;
 void setup() {
-  size(1600, 800);
+  size(1600, 900);
   background(0);
   bolts = new Bolt[count];
   for (int i = 0; i < bolts.length; i++) {
