@@ -1,3 +1,6 @@
+int count = 0;
+
+
 class Bolt {
   float myX, myY;
   float myT = 0;
@@ -7,39 +10,39 @@ class Bolt {
   Bolt() {
     centerX = 1600/2;
     centerY = 800/2;
-    light = color((int)(Math.random()*200+55),(int)(Math.random()*200+55),(int)(Math.random()*200+55));
+    light = color((int)(Math.random()*200+55), (int)(Math.random()*200+55), (int)(Math.random()*200+55));
     myRadius = (float)(Math.random()*2)+1;
     myT =(int)(Math.random()*360);
     myVelocity = (float)(Math.random()+0.5);
     mySize = (float)(Math.random()*2)+1;
-    
+
     myX = centerX+myRadius;
-    myY = centerY+myRadius;    
+    myY = centerY+myRadius;
   }
   void flash() {
     if (Math.random() < 0.001) {
       myVelocity *= -1;
     }
-    
+
     oldX = myX + (float)(Math.random()-0.5)*5;
     oldY = myY + (float)(Math.random()-0.5)*5;
 
     myX += -sin(radians(myT + (float)(Math.random()-0.5))) * myRadius + (float)(Math.random()-0.5);
     myY += cos(radians(myT + (float)(Math.random()-0.5))) * myRadius + (float)(Math.random()-0.5);
     myT += myVelocity;
-    
   }
   void show() {
     strokeWeight(mySize);
     stroke(light);
-    line(myX,myY,oldX,oldY);
+    line(myX, myY, oldX, oldY);
   }
 }
-
-Bolt [] bolts = new Bolt[100];
+Bolt [] tempBolts;
+Bolt [] bolts;
 void setup() {
-  size(1600,800);
+  size(1600, 800);
   background(0);
+  bolts = new Bolt[count];
   for (int i = 0; i < bolts.length; i++) {
     bolts[i] = new Bolt();
   }
@@ -48,18 +51,18 @@ void setup() {
 float anchorX, anchorY;
 
 void draw() {
-  
+
   resetMatrix();
   if (mousePressed) {
-    translate(mouseX-anchorX,mouseY-anchorY);
-    fill(0,99);
-  }  else {
-    fill(0,10);
+    translate(mouseX-anchorX, mouseY-anchorY);
+    fill(0, 99);
+  } else {
+    fill(0, 10);
   }
-  
+
   noStroke();
-  rect(-width,-height,width*3,height*3);
-  
+  rect(-width, -height, width*3, height*3);
+
   for (int i = 0; i < bolts.length; i++) {
     bolts[i].flash();
     bolts[i].show();
@@ -69,4 +72,32 @@ void draw() {
 void mousePressed() {
   anchorX = mouseX;
   anchorY = mouseY;
+}
+void keyPressed() {
+  
+  if (key == 'w') {
+    tempBolts = new Bolt[count];
+    for (int i = 0; i < bolts.length; i++) {
+      tempBolts[i] = bolts[i];
+    }
+    count++;
+    bolts = new Bolt[count];
+    for (int i = 0; i < tempBolts.length; i++) {
+      bolts[i] = tempBolts[i];
+    }    
+    bolts[bolts.length-1] = new Bolt();
+  }
+  
+  if (key == 's' && count > 0) {
+    tempBolts = new Bolt[count];
+    for (int i = 0; i < bolts.length; i++) {
+      tempBolts[i] = bolts[i];
+    }
+    count--;
+    bolts = new Bolt[count];
+    for (int i = 0; i < bolts.length; i++) {
+      bolts[i] = tempBolts[i+1];
+    }
+  }
+  
 }
