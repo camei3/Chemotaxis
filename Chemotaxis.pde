@@ -5,7 +5,7 @@ class Bolt {
   float myX, myY;
   float myT = 0;
   float oldX, oldY;
-  float centerX, centerY, myRadius, myVelocity, mySize;
+  float centerX, centerY, myRadius, myVelocity, mySize;  //radius needs to be fixed, do derivative properly >:(
   color light;
   Bolt(boolean fromMouse) {
     if (fromMouse) {
