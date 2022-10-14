@@ -7,9 +7,14 @@ class Bolt {
   float oldX, oldY;
   float centerX, centerY, myRadius, myVelocity, mySize;
   color light;
-  Bolt() {
-    centerX = 1600/2;
-    centerY = 800/2;
+  Bolt(boolean fromMouse) {
+    if (fromMouse) {
+      centerX = anchorX;
+      centerY = anchorY;
+    } else {
+      centerX = 1600/2;
+      centerY = 800/2;
+    }
     light = color((int)(Math.random()*200+55), (int)(Math.random()*200+55), (int)(Math.random()*200+55));
     myRadius = (float)(Math.random()*2)+1;
     myT =(int)(Math.random()*360);
@@ -44,7 +49,7 @@ void setup() {
   background(0);
   bolts = new Bolt[count];
   for (int i = 0; i < bolts.length; i++) {
-    bolts[i] = new Bolt();
+    bolts[i] = new Bolt(false);
   }
 }
 
@@ -57,6 +62,8 @@ void draw() {
     translate(mouseX-anchorX, mouseY-anchorY);
     fill(0, 99);
   } else {
+    anchorX = width/2;
+    anchorY = height/2;
     fill(0, 10);
   }
 
@@ -67,6 +74,10 @@ void draw() {
     bolts[i].flash();
     bolts[i].show();
   }
+  
+  //strokeWeight(10);  
+  //stroke(255);
+  //point(anchorX,anchorY);  
 }
 
 void mousePressed() {
@@ -85,7 +96,7 @@ void keyPressed() {
     for (int i = 0; i < tempBolts.length; i++) {
       bolts[i] = tempBolts[i];
     }    
-    bolts[bolts.length-1] = new Bolt();
+    bolts[bolts.length-1] = new Bolt(true);
   }
   
   if (key == 's' && count > 0) {
