@@ -5,8 +5,8 @@ class Bolt {
   float centerX, centerY, myRadius, myVelocity, mySize;
   color light;
   Bolt() {
-    centerX = (float)(Math.random()*1600);
-    centerY = (float)(Math.random()*800);
+    centerX = 1600/2;
+    centerY = 800/2;
     light = color((int)(Math.random()*200+55),(int)(Math.random()*200+55),(int)(Math.random()*200+55));
     myRadius = (float)(Math.random()*2)+1;
     myT =(int)(Math.random()*360);
@@ -52,9 +52,11 @@ void draw() {
   resetMatrix();
   if (mousePressed) {
     translate(mouseX-anchorX,mouseY-anchorY);
-  }  
+    fill(0,99);
+  }  else {
+    fill(0,10);
+  }
   
-  fill(0,10);
   noStroke();
   rect(-width,-height,width*3,height*3);
   
