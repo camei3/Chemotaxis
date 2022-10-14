@@ -112,3 +112,4 @@ void keyPressed() {
   }
   
 }
+//maybe UI for total fireworks and coords and stuff
