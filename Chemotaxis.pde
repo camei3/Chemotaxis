@@ -1,6 +1,7 @@
 int count = 0;
-
-
+int screenW = 800;
+int screenH = 450;
+boolean chemotaxis = false;
 class Bolt {
   float myX, myY;
   float myT = 0;
@@ -12,20 +13,22 @@ class Bolt {
       centerX = anchorX;
       centerY = anchorY;
     } else {
-      centerX = 1600/2;
-      centerY = 900/2;
+      centerX = screenW/2;
+      centerY = screenH/2;
     }
     light = color((int)(Math.random()*200+55), (int)(Math.random()*200+55), (int)(Math.random()*200+55));
     myRadius = (float)(Math.random()*2)+1;
     myT =(int)(Math.random()*360);
-    myVelocity = (float)(Math.random()+0.5);
+    myVelocity = (float)(Math.random()+0.5) * myRadius;
     mySize = (float)(Math.random()*2)+1;
 
     myX = centerX+myRadius;
     myY = centerY+myRadius;
+    oldX = myX;
+    oldY = myY;
   }
   void flash() {
-    if (Math.random() < 0.001) {
+    if (Math.random() < abs(myVelocity*myRadius)/360) {
       myVelocity *= -1;
     }
 
@@ -45,25 +48,21 @@ class Bolt {
 Bolt [] tempBolts;
 Bolt [] bolts;
 void setup() {
-  size(1600, 900);
+  size(800,450);
   background(0);
   bolts = new Bolt[count];
-  for (int i = 0; i < bolts.length; i++) {
-    bolts[i] = new Bolt(false);
-  }
 }
 
 float anchorX, anchorY;
 
 void draw() {
-
   resetMatrix();
   if (mousePressed) {
     translate(mouseX-anchorX, mouseY-anchorY);
     fill(0, 99);
   } else {
-    anchorX = width/2;
-    anchorY = height/2;
+    anchorX = screenW/2;
+    anchorY = screenH/2;
     fill(0, 10);
   }
     //home to center when mouse pressed?
@@ -71,7 +70,11 @@ void draw() {
   rect(-width, -height, width*3, height*3);
 
   for (int i = 0; i < bolts.length; i++) {
-    bolts[i].flash();
+    if (chemotaxis) {
+
+    } else {
+      bolts[i].flash();    
+    }
     bolts[i].show();
   }
   
@@ -109,6 +112,10 @@ void keyPressed() {
     for (int i = 0; i < bolts.length; i++) {
       bolts[i] = tempBolts[i+1];
     }
+  }
+  
+  if (key == ' ') {
+    chemotaxis = !chemotaxis;
   }
   
 }
