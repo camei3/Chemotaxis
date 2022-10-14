@@ -40,6 +40,11 @@ class Bolt {
     myT += myVelocity;
   }
   void converge() {
+    //needs testing
+    float holdX = oldX, holdY = oldY;
+    if (dist(holdX,holdY,screenW/2,screenH/2) > dist(myX,myY,screenW/2,screenH/2)) {
+      myVelocity *= -1;
+    }
     if (Math.random() < abs(myVelocity*myRadius)/360) {
       myVelocity *= -1;
     }
@@ -77,7 +82,6 @@ void draw() {
     anchorY = screenH/2;
     fill(0, 10);
   }
-    //home to center when mouse pressed?
   noStroke();
   rect(-width, -height, width*3, height*3);
 
@@ -133,3 +137,4 @@ void keyPressed() {
   
 }
 //maybe UI for total fireworks and coords and stuff
+//event when collide? create new array to store firework, delete  & shift array? or if lazy set new mode for individual firework
