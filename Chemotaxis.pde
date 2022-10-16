@@ -139,3 +139,4 @@ void keyPressed() {
 }
 //maybe UI for total fireworks and coords and stuff
 //event when collide? create new array to store firework, delete  & shift array? or if lazy set new mode for individual firework
+//click will change the range of colors you can get? thatll make each core more consistent
