@@ -165,8 +165,10 @@ void removeBolt(int amount) {
 
 color newColorRange() {
   int[] colors = new int[3];
+  int vibrancy = 255;
   for (int i = 0; i < colors.length; i++) {
-  
+    vibrancy -= (int)(Math.random() * vibrancy);
+    colors[i] = 255 - vibrancy;
   }
   return color(colors[0],colors[1],colors[2]);
 }
