@@ -1,13 +1,19 @@
 int count = 100;
-int screenW = 1600;
-int screenH = 900;
+
+int screenW = 1200;
+int screenH = 875;
+
 boolean chemotaxis = true;
+
 class Bolt {
+  float oldX, oldY;  
   float myX, myY;
+  
   float myT = 0;
-  float oldX, oldY;
   float centerX, centerY, myRadius, myVelocity, mySize; 
+  
   color light;
+  
   Bolt(boolean fromMouse) {
     if (fromMouse) {
       centerX = anchorX;
@@ -64,7 +70,7 @@ Bolt [] tempBolts;
 Bolt [] bolts;
 
 void setup() {
-  size(1600, 900);
+  size(1200, 875);
   background(0);
 
   bolts = new Bolt[count];
@@ -74,7 +80,6 @@ void setup() {
 }
 
 float anchorX, anchorY;
-
 void draw() {
   resetMatrix();
   if (mousePressed) {
@@ -87,7 +92,7 @@ void draw() {
   }
   noStroke();
   rect(-width, -height, width*3, height*3);
-
+  
   for (int i = 0; i < bolts.length; i++) {
     if (!chemotaxis) {
       bolts[i].flash();
@@ -96,7 +101,6 @@ void draw() {
     }
     bolts[i].show();
   }
-
   //strokeWeight(10);  
   //stroke(255);
   //point(anchorX,anchorY);
@@ -108,35 +112,43 @@ void mousePressed() {
 }
 void keyPressed() {
 
-  if (key == 'w') {
-    tempBolts = new Bolt[count];
-    for (int i = 0; i < bolts.length; i++) {
-      tempBolts[i] = bolts[i];
-    }
-    count++;
-    bolts = new Bolt[count];
-    for (int i = 0; i < tempBolts.length; i++) {
-      bolts[i] = tempBolts[i];
-    }    
-    bolts[bolts.length-1] = new Bolt(true);
+  if (key == 'w' || keyCode == UP) {
+    addBolt(1);
   }
 
-  if (key == 's' && count > 0) {
-    tempBolts = new Bolt[count];
-    for (int i = 0; i < bolts.length; i++) {
-      tempBolts[i] = bolts[i];
-    }
-    count--;
-    bolts = new Bolt[count];
-    for (int i = 0; i < bolts.length; i++) {
-      bolts[i] = tempBolts[i+1];
-    }
+  if ((key == 's' || keyCode == DOWN) && count > 0) {
+    removeBolt(1);
   }
 
   if (key == ' ') {
     chemotaxis = !chemotaxis;
   }
 }
+
+void addBolt(int amount) {
+    tempBolts = new Bolt[count];
+    for (int i = 0; i < bolts.length; i++) {
+      tempBolts[i] = bolts[i];
+    }
+    count += amount;
+    bolts = new Bolt[count];
+    for (int i = 0; i < tempBolts.length; i++) {
+      bolts[i] = tempBolts[i];
+    }    
+    bolts[bolts.length-1] = new Bolt(true);
+}
+
+void removeBolt(int amount) {
+    tempBolts = new Bolt[count];
+    for (int i = 0; i < bolts.length; i++) {
+      tempBolts[i] = bolts[i];
+    }
+    count -= amount;
+    bolts = new Bolt[count];
+    for (int i = 0; i < bolts.length; i++) {
+      bolts[i] = tempBolts[i+1];
+    }
+}
+
 //maybe UI for total fireworks and coords and stuff
-//event when collide? create new array to store firework, delete  & shift array? or if lazy set new mode for individual firework
 //click will change the range of colors you can get? thatll make each core more consistent
