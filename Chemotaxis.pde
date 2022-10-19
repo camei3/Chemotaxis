@@ -4,7 +4,6 @@ int screenW = 1200;
 int screenH = 875;
 
 boolean chemotaxis = true;
-
 class Bolt {
   float oldX, oldY;  
   float myX, myY;
@@ -32,6 +31,8 @@ class Bolt {
     oldY = myY = centerY+myRadius;
   }
   void flash() {
+    
+    //flips rotation average every 360 degrees
     if (Math.random() < abs(myVelocity*myRadius)/360) {
       myVelocity *= -1;
     }
@@ -45,20 +46,24 @@ class Bolt {
   }
 
   void converge() {
+    
     float anchorRadius = (float)Math.random()*myRadius;
     float anchorAngle = atan((centerY-myY)/(centerX-myX));
+    
     if (myX > centerX) {
       anchorAngle += PI;
     }
+    
     float anchX = myX + cos(anchorAngle)*anchorRadius;
     float anchY = myY + sin(anchorAngle)*anchorRadius;
-    oldX = myX;
-    oldY = myY;
+    
+    oldX = myX + (float)(Math.random()-0.5)*2;
+    oldY = myY + (float)(Math.random()-0.5)*2;
     
     myX = anchX + cos(radians(myT));
     myY = anchY + sin(radians(myT));
     myT += myVelocity;
-    resetMatrix();
+    
   }  
   void show() {
     strokeWeight(mySize);
@@ -110,6 +115,14 @@ void mousePressed() {
   anchorX = mouseX;
   anchorY = mouseY;
 }
+
+void mouseReleased() {
+  //could be compacted with the other clear screens, maybe with a function?
+  fill(0);
+  noStroke();
+  rect(-width, -height, width*3, height*3);  
+}
+
 void keyPressed() {
 
   if (key == 'w' || keyCode == UP) {
@@ -148,6 +161,14 @@ void removeBolt(int amount) {
     for (int i = 0; i < bolts.length; i++) {
       bolts[i] = tempBolts[i+1];
     }
+}
+
+color newColorRange() {
+  int[] colors = new int[3];
+  for (int i = 0; i < colors.length; i++) {
+  
+  }
+  return color(colors[0],colors[1],colors[2]);
 }
 
 //maybe UI for total fireworks and coords and stuff
