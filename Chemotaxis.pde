@@ -91,13 +91,16 @@ void setup() {
 
 float anchorX, anchorY;
 void draw() {
-  resetMatrix();
   if (mousePressed) {
-    translate(mouseX-anchorX, mouseY-anchorY);
+    if (mouseButton == LEFT) {
+      anchorX = mouseX;
+      anchorY = mouseY;
+    } else if (mouseButton == RIGHT) {
+      anchorX = width/2;
+      anchorY = height/2;
+    }
     fill(0, 99);
   } else {
-    anchorX = screenW/2;
-    anchorY = screenH/2;
     fill(0, 10);
   }
   noStroke();
@@ -118,8 +121,6 @@ void draw() {
 
 void mousePressed() {
   rgb = newColorRange();
-  anchorX = mouseX;
-  anchorY = mouseY;
 }
 
 void mouseReleased() {
@@ -174,7 +175,10 @@ color[] newColorRange() {
   int vibrancy = 255;
   for (int i = 0; i < colors.length; i++) {
     vibrancy -= (int)(Math.random() * vibrancy);
-    colors[i] = 255 - vibrancy;
+    colors[i] = 255 - vibrancy + (int)(Math.random()*11);
   }
   return colors;
 }
+
+//maybe UI for total fireworks and coords and stuff
+//click will change the range of colors you can get? thatll make each core more consistent
