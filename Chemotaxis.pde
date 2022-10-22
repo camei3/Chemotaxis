@@ -1,4 +1,4 @@
-int count = 100;
+int count;
 
 int screenW = 1200;
 int screenH = 875;
@@ -82,6 +82,8 @@ void setup() {
   size(1200, 875);
   background(0);
 
+  //initialize with bolts
+  count = 100;
   rgb = newColorRange();
   bolts = new Bolt[count];
   for (int i = 0; i < count; i++) {
@@ -92,13 +94,17 @@ void setup() {
 float anchorX, anchorY;
 void draw() {
   if (mousePressed) {
+    //spawn location at mouse
     if (mouseButton == LEFT) {
       anchorX = mouseX;
       anchorY = mouseY;
+    //spawn location at center
     } else if (mouseButton == RIGHT) {
       anchorX = width/2;
       anchorY = height/2;
     }
+    
+    //reduce trail
     fill(0, 99);
   } else {
     fill(0, 10);
@@ -106,6 +112,7 @@ void draw() {
   noStroke();
   rect(-width, -height, width*3, height*3);
   
+  //transverse rocket behavior
   for (int i = 0; i < bolts.length; i++) {
     if (!chemotaxis) {
       bolts[i].flash();
@@ -114,12 +121,15 @@ void draw() {
     }
     bolts[i].show();
   }
+  
+  //CHECKING THE ROCKET SPAWNPOINT
   //strokeWeight(10);  
   //stroke(255);
   //point(anchorX,anchorY);
 }
 
 void mousePressed() {
+  //new firework colors!
   rgb = newColorRange();
 }
 
@@ -131,38 +141,59 @@ void mouseReleased() {
 
 void keyPressed() {
   if (key == ' ') {
-    chemotaxis = !chemotaxis;
+    chemotaxis = !chemotaxis;    
   }
+  
+  if (key == 'w' || keyCode == UP) {
+    addBolt(1);
+  }
+
+  if ((key == 's' || keyCode == DOWN) && count > 0) {
+    removeBolt(1);
+  }  
 }
 
 void mouseWheel(MouseEvent event) {
+  //scroll down
   if (event.getCount() == -1) {
     addBolt(1);
   }
+  //scroll up
   if (event.getCount() == 1 && count > 0) {
     removeBolt(1);
   }
 }
 
 void addBolt(int amount) {
+    
+    //store old Bolts
     tempBolts = new Bolt[count];
     for (int i = 0; i < bolts.length; i++) {
       tempBolts[i] = bolts[i];
     }
+    
     count += amount;
+    
+    //make and fill new Bolts
     bolts = new Bolt[count];
     for (int i = 0; i < tempBolts.length; i++) {
       bolts[i] = tempBolts[i];
     }    
+    
     bolts[bolts.length-1] = new Bolt(true);
 }
 
 void removeBolt(int amount) {
+  
+    //store old Bolts
     tempBolts = new Bolt[count];
     for (int i = 0; i < bolts.length; i++) {
       tempBolts[i] = bolts[i];
     }
+    
     count -= amount;
+    
+    //make and fill new Bolts
     bolts = new Bolt[count];
     for (int i = 0; i < bolts.length; i++) {
       bolts[i] = tempBolts[i+1];
@@ -170,8 +201,10 @@ void removeBolt(int amount) {
 }
 
 color[] newColorRange() {
+  
   int[] colors = new int[3];
   int vibrancy = 255;
+  
   for (int i = 0; i < colors.length; i++) {
     vibrancy -= (int)(Math.random() * vibrancy);
     colors[i] = 255 - vibrancy + (int)(Math.random()*11);
