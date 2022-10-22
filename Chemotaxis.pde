@@ -4,6 +4,8 @@ int screenW = 1200;
 int screenH = 875;
 
 boolean chemotaxis = true;
+int[] rgb;
+
 class Bolt {
   float oldX, oldY;  
   float myX, myY;
@@ -21,7 +23,9 @@ class Bolt {
       centerX = screenW/2;
       centerY = screenH/2;
     }
-    light = color((int)(Math.random()*200+55), (int)(Math.random()*200+55), (int)(Math.random()*200+55));
+    
+    light = color(rgb[2]+(int)((Math.random()-0.5)*50), rgb[1]+(int)((Math.random()-0.5)*50), rgb[0]+(int)((Math.random()-0.5)*50));
+    
     myRadius = (float)(Math.random()*2)+1;
     myT =(int)(Math.random()*360);
     myVelocity = (float)(Math.random()+0.5) * myRadius;
@@ -78,6 +82,7 @@ void setup() {
   size(1200, 875);
   background(0);
 
+  rgb = newColorRange();
   bolts = new Bolt[count];
   for (int i = 0; i < count; i++) {
     bolts[i] = new Bolt(false);
@@ -112,6 +117,7 @@ void draw() {
 }
 
 void mousePressed() {
+  rgb = newColorRange();
   anchorX = mouseX;
   anchorY = mouseY;
 }
@@ -124,17 +130,17 @@ void mouseReleased() {
 }
 
 void keyPressed() {
-
-  if (key == 'w' || keyCode == UP) {
-    addBolt(1);
-  }
-
-  if ((key == 's' || keyCode == DOWN) && count > 0) {
-    removeBolt(1);
-  }
-
   if (key == ' ') {
     chemotaxis = !chemotaxis;
+  }
+}
+
+void mouseWheel(MouseEvent event) {
+  if (event.getCount() == -1) {
+    addBolt(1);
+  }
+  if (event.getCount() == 1 && count > 0) {
+    removeBolt(1);
   }
 }
 
@@ -163,15 +169,12 @@ void removeBolt(int amount) {
     }
 }
 
-color newColorRange() {
+color[] newColorRange() {
   int[] colors = new int[3];
   int vibrancy = 255;
   for (int i = 0; i < colors.length; i++) {
     vibrancy -= (int)(Math.random() * vibrancy);
     colors[i] = 255 - vibrancy;
   }
-  return color(colors[0],colors[1],colors[2]);
+  return colors;
 }
-
-//maybe UI for total fireworks and coords and stuff
-//click will change the range of colors you can get? thatll make each core more consistent
