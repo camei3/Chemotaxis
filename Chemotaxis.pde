@@ -124,7 +124,6 @@ void mousePressed() {
 }
 
 void mouseReleased() {
-  //could be compacted with the other clear screens, maybe with a function?
   fill(0);
   noStroke();
   rect(-width, -height, width*3, height*3);  
@@ -179,6 +178,3 @@ color[] newColorRange() {
   }
   return colors;
 }
-
-//maybe UI for total fireworks and coords and stuff
-//click will change the range of colors you can get? thatll make each core more consistent
